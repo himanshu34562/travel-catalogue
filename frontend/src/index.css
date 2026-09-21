@@ -1,0 +1,264 @@
+/* ---------- Tokens ---------- */
+:root {
+  --ink: #1b3a36;
+  --ink-light: #24504a;
+  --sand: #f4eee0;
+  --paper: #fffdf8;
+  --rust: #c1502e;
+  --rust-dark: #a63f22;
+  --gold: #c98f2b;
+  --charcoal: #2a2620;
+  --charcoal-soft: #6b6255;
+  --line: #ddd0ad;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Work Sans', system-ui, -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--sand);
+  color: var(--charcoal);
+  line-height: 1.5;
+}
+
+/* ---------- Layout shell ---------- */
+.app { max-width: 1080px; margin: 0 auto; padding-bottom: 72px; }
+
+/* ---------- Hero ---------- */
+.hero {
+  background: var(--ink);
+  color: var(--sand);
+  padding: 56px 32px 48px;
+  margin-bottom: -28px;
+  position: relative;
+}
+.hero-inner { max-width: 1080px; margin: 0 auto; }
+.hero-eyebrow {
+  font-family: var(--font-body);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--gold);
+  margin: 0 0 10px;
+  font-weight: 600;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(34px, 5vw, 52px);
+  line-height: 1.05;
+  margin: 0 0 14px;
+  max-width: 14ch;
+}
+.hero p {
+  font-size: 16px;
+  color: #d8e6e1;
+  max-width: 46ch;
+  margin: 0;
+}
+
+/* ---------- Section wrapper ---------- */
+.section { padding: 0 24px; }
+
+/* ---------- Ticket-style add form ---------- */
+.ticket {
+  background: var(--paper);
+  border-radius: 14px;
+  padding: 28px 28px 24px;
+  margin: 32px 0 24px;
+  box-shadow: 0 12px 30px -18px rgba(27, 58, 54, 0.35);
+  border: 1px solid var(--line);
+  position: relative;
+}
+.ticket::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 78px;
+  border-top: 2px dashed var(--line);
+}
+.ticket h2 {
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 600;
+  margin: 0 0 18px;
+  color: var(--ink);
+}
+.ticket-fields {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 14px;
+  margin-top: 30px;
+}
+.field-full { grid-column: 1 / -1; }
+
+.ticket label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--charcoal-soft);
+  margin-bottom: 5px;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  color: var(--charcoal);
+  background: var(--paper);
+  transition: border-color 0.15s ease;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--rust);
+}
+textarea { resize: vertical; min-height: 64px; }
+
+.btn-primary {
+  background: var(--rust);
+  color: #fff8f2;
+  border: none;
+  padding: 11px 22px;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14.5px;
+  cursor: pointer;
+  margin-top: 6px;
+  transition: background 0.15s ease;
+}
+.btn-primary:hover:not(:disabled) { background: var(--rust-dark); }
+.btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* ---------- Filter strip ---------- */
+.filter-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  background: transparent;
+  padding: 0 0 24px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 28px;
+}
+.filter-strip .filter-label {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--ink);
+  font-size: 15px;
+  margin-right: 4px;
+  white-space: nowrap;
+}
+.filter-strip input, .filter-strip select {
+  width: auto;
+  min-width: 120px;
+  flex: 1 1 130px;
+  background: var(--paper);
+}
+
+/* ---------- Destination grid (postcards) ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 22px;
+}
+
+.postcard {
+  background: var(--paper);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: 0 10px 24px -18px rgba(27, 58, 54, 0.4);
+  display: flex;
+  flex-direction: column;
+}
+.postcard .photo-wrap {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: linear-gradient(135deg, var(--ink-light), var(--ink));
+  overflow: hidden;
+}
+.postcard img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.postcard .stamp {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--gold);
+  color: #2a2110;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+.postcard .body { padding: 16px 18px 18px; flex: 1; display: flex; flex-direction: column; }
+.postcard h3 {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 600;
+  margin: 0 0 3px;
+  color: var(--ink);
+}
+.postcard .place { font-size: 13px; color: var(--charcoal-soft); margin: 0 0 10px; }
+.postcard .price {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--rust);
+  margin: 0 0 8px;
+}
+.postcard .desc {
+  font-size: 13.5px;
+  color: var(--charcoal-soft);
+  margin: 0 0 14px;
+  flex: 1;
+}
+.postcard .delete {
+  align-self: flex-start;
+  background: transparent;
+  color: var(--charcoal-soft);
+  border: 1.5px solid var(--line);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.postcard .delete:hover { border-color: var(--rust); color: var(--rust); }
+
+/* ---------- States ---------- */
+.error {
+  background: #fbe9e3;
+  border: 1px solid #eab7a4;
+  color: var(--rust-dark);
+  font-size: 13.5px;
+  font-weight: 500;
+  padding: 9px 14px;
+  border-radius: 8px;
+  margin: 0 0 14px;
+}
+.empty {
+  text-align: center;
+  color: var(--charcoal-soft);
+  font-size: 15px;
+  padding: 48px 20px;
+  border: 1.5px dashed var(--line);
+  border-radius: 12px;
+}
+.loading { text-align: center; color: var(--charcoal-soft); padding: 40px 0; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 560px) {
+  .hero { padding: 40px 20px 36px; }
+  .section { padding: 0 16px; }
+  .ticket-fields { grid-template-columns: 1fr; }
+  .filter-strip { flex-direction: column; align-items: stretch; }
+  .filter-strip .filter-label { margin-bottom: 4px; }
+}
