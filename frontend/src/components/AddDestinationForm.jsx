@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { addDestination } from '../api';
+import { addDestination, uploadImage } from '../api';
 
 const CATEGORIES = ['Beach', 'Mountain', 'City', 'Heritage', 'Wildlife', 'Other'];
 
@@ -9,16 +9,21 @@ const EMPTY_FORM = {
   category: 'Beach',
   price: '',
   description: '',
-  imageUrl: '',
 };
 
 export default function AddDestinationForm({ onAdded }) {
   const [form, setForm] = useState(EMPTY_FORM);
+  const [imageFile, setImageFile] = useState(null);
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
+  }
+
+  function handleFileChange(e) {
+    setImageFile(e.target.files[0] || null);
   }
 
   async function handleSubmit(e) {
@@ -36,13 +41,22 @@ export default function AddDestinationForm({ onAdded }) {
 
     setSubmitting(true);
     try {
-      const saved = await addDestination({ ...form, price: Number(form.price) });
+      let imageUrl = '';
+      if (imageFile) {
+        setUploading(true);
+        imageUrl = await uploadImage(imageFile);
+        setUploading(false);
+      }
+
+      const saved = await addDestination({ ...form, price: Number(form.price), imageUrl });
       onAdded(saved);
       setForm(EMPTY_FORM);
+      setImageFile(null);
     } catch (err) {
       setError(err.details ? err.details.join(', ') : err.message);
     } finally {
       setSubmitting(false);
+      setUploading(false);
     }
   }
 
@@ -77,13 +91,13 @@ export default function AddDestinationForm({ onAdded }) {
           <textarea id="description" name="description" placeholder="What makes this place worth the trip" value={form.description} onChange={handleChange} />
         </div>
         <div className="field-full">
-          <label htmlFor="imageUrl">Image URL (optional)</label>
-          <input id="imageUrl" name="imageUrl" placeholder="https://…" value={form.imageUrl} onChange={handleChange} />
+          <label htmlFor="image">Photo (optional)</label>
+          <input id="image" name="image" type="file" accept="image/*" onChange={handleFileChange} />
         </div>
       </div>
 
       <button type="submit" className="btn-primary" disabled={submitting}>
-        {submitting ? 'Adding…' : 'Add destination'}
+        {uploading ? 'Uploading photo…' : submitting ? 'Adding…' : 'Add destination'}
       </button>
     </form>
   );

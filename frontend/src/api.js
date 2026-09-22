@@ -29,6 +29,16 @@ export async function addDestination(destination) {
   return data;
 }
 
+export async function uploadImage(file) {
+  const formData = new FormData();
+  formData.append('image', file);
+
+  const res = await fetch('/api/upload', { method: 'POST', body: formData });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Failed to upload image');
+  return data.url;
+}
+
 export async function deleteDestination(id) {
   const res = await fetch(`${BASE_URL}/${id}`, { method: 'DELETE' });
   const data = await res.json();
